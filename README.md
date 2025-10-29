@@ -14,7 +14,7 @@ If it does not have a Jira issue number, it will derive the issue number from th
 
 ## Prerequisites
 
-If you are installing on a Windows machine, it is recommended that you install [Git for Windows](https://git-scm.com/download/win).
+If you are installing on a Windows machine, it is recommended that you install [Git for Windows](https://git-scm.com/install/windows).
 
 Once installed, open a Git Bash session and follow the installation instructions below.
 
