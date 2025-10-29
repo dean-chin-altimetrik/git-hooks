@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Collect the parameters
+commit_msg_filepath=$1
+
+# Figure out which branch we are on
+branch=$(git symbolic-ref --short HEAD)
+normalized_branch="${branch##*/}"
+
+re="([a-zA-Z]+-[0-9]+)"
+
+# Attempt to extract the issue number from the branch name
+if [[ $normalized_branch =~ $re ]]; then
+    issue_number=${BASH_REMATCH[1]}
+    
+    content=$(<$commit_msg_filepath)
+    
+    # If the commit message file does not start with the issue number
+    # Then add it to the beginning of the file
+    if [[ $content != $issue_number* ]]; then
+        echo "$issue_number: $content" > $commit_msg_filepath
+    fi
+    
+else
+    echo "commit-msg: Unable to retrieve issue number from branch name"
+    content=$(<$commit_msg_filepath)
+    
+    # Check the commit message for something that looks like an issue message
+    if [[ ! $content =~ ^[A-Za-z]+-[0-9]+ ]]; then
+        echo "commt-msg: commit message does not start with an issue number"
+        exit 1
+    fi
+
+fi

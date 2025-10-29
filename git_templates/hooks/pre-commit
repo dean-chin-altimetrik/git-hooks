@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Figure out if this is the initial commit or not
+if git rev-parse --verify HEAD >/dev/null 2>&1; then
+    against=HEAD
+else
+    against=NOT_HEAD
+fi
+
+# Get the branch name
+branch=$(git symbolic-ref --short HEAD)
+
+# Only allow committing to master if it is the initial commit
+if [[ "$branch" == "master" && "$against" == "HEAD" ]]; then
+    echo "pre-commit: you cannot commit directly to the master branch"
+    exit 1
+fi
+
+# Don't allow commits to the develop branch
+if [[ "$branch" == "develop" ]]; then
+    echo "pre-commit: you cannot commit directly to the develop branch"
+    exit 1
+fi
+
